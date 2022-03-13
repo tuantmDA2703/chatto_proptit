@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:chatto_app/base/utility.dart';
 import 'package:chatto_app/config/app_route.dart';
-import 'package:chatto_app/service/navigator_service.dart';
+import 'package:chatto_app/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
