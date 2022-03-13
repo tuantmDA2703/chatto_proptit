@@ -1,4 +1,4 @@
-class Constant {
+class AppConstant {
   static const none = 'None';
   static const unchartedInt = -1;
   static const unchartedListString = <String>[];

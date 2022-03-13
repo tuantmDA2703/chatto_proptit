@@ -2,6 +2,9 @@ import 'package:chatto_app/screen/authentication/login/login_page.dart';
 import 'package:chatto_app/screen/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 
+/// Declare constant string route here
+/// Then create app page with routeSettings name
+
 class AppRoute {
   static const String splash = 'splash';
   static const String login = 'login';

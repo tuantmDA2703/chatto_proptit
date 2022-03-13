@@ -2,17 +2,18 @@ import 'package:chatto_app/base/bloc_base.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-
+///   Created by Duong Le
+///   Sat,Mar 13th,2022
 ///   PageBase which extended by all page in project.
 ///   It extends StatefulWidget because we need know about lifecycle of page.
 /// 
 ///   You can implement function:
-///   	- [PagefulBase.onInit] will call when page [initState]
-///   	- [PagefulBase.onInactive] will call when page [inactive]
-///   	- [PagefulBase.onResumed] will call when page [resumed]
-///   	- [PagefulBase.onPaused] will call when page [pause]
-///   	- [PagefulBase.onDetached] will call when page [detached]
-///   	- [PagefulBase.onDispose] will call when page [dispose]
+///   	- [BasePage.onInit] will call when page [initState]
+///   	- [BasePage.onInactive] will call when page [inactive]
+///   	- [BasePage.onResumed] will call when page [resumed]
+///   	- [BasePage.onPaused] will call when page [pause]
+///   	- [BasePage.onDetached] will call when page [detached]
+///   	- [BasePage.onDispose] will call when page [dispose]
 /// 
 /// 
 ///    Description about state:
@@ -25,11 +26,11 @@ import 'package:get_it/get_it.dart';
 /// 					any host views.
 
 
-abstract class PagefulBase<@required T extends BlocBase> extends StatefulWidget {
+abstract class BasePage<@required T extends BlocBase> extends StatefulWidget {
   final T _bloc = GetIt.I.get<T>();
   T get bloc => _bloc;
 
-  PagefulBase({Key? key}) : super(key: key);
+  BasePage({Key? key}) : super(key: key);
 
   Widget build(BuildContext context);
 
@@ -52,10 +53,10 @@ abstract class PagefulBase<@required T extends BlocBase> extends StatefulWidget 
   void onDetached() {}
 
   @override
-  State<PagefulBase> createState() => _PagefulBaseState();
+  State<BasePage> createState() => _BasePageState();
 }
 
-class _PagefulBaseState extends State<PagefulBase> with WidgetsBindingObserver {
+class _BasePageState extends State<BasePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
