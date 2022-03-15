@@ -21,9 +21,7 @@ class SignUpPage extends BasePage<SignUpBloc> {
           StreamBuilder(
               stream: bloc.signUpStatusStream,
               builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Container();
-                }
+                
                 return (snapshot.data as Status<String>).when(
                     onIdle: () => Container(),
                     onLoading: () {
