@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "951840259016",
+    "project_id": "chatto-453c2",
+    "storage_bucket": "chatto-453c2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951840259016:android:089523afd93491efb99efd",
+        "android_client_info": {
+          "package_name": "com.tuantm2703devacc.chatto_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951840259016-7epq63tg0urhn29po7cv5bdcpr5s95r3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVS-G6C_2vfbCPIVLy_5gr-KQwILo5Zuk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951840259016-7epq63tg0urhn29po7cv5bdcpr5s95r3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,12 +1,15 @@
 import 'package:chatto_app/base/set_up_service_locator.dart';
 import 'package:chatto_app/services/navigator_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'config/app_route.dart';
 import 'screen/splash/splash_page.dart';
 
-void main(){
+void main()async{
+  WidgetsFlutterBinding.ensureInitialized();
   setUpServiceLocator();
+  await Firebase.initializeApp();
   runApp(const ChattoApp());
 }
 
