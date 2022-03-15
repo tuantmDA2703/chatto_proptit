@@ -25,7 +25,6 @@ import 'package:get_it/get_it.dart';
 /// 	- [detached] : The application is still hosted on a flutter engine but is detached from
 /// 					any host views.
 
-
 abstract class BasePage<@required T extends BlocBase> extends StatefulWidget {
   final T _bloc = GetIt.I.get<T>();
   T get bloc => _bloc;

@@ -12,7 +12,7 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Utility utility = Utility();
     Timer(const Duration(seconds: 2), () async {
-     utility.navigator.pushed(AppRoute.login);
+     utility.navigator.pushed(AppRoute.register);
     });
     return Scaffold(
       body: Center(

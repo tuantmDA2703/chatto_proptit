@@ -1,4 +1,5 @@
 import 'package:chatto_app/screen/authentication/login/login_page.dart';
+import 'package:chatto_app/screen/authentication/sign_up/sign_up_page.dart';
 import 'package:chatto_app/screen/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,10 @@ class AppRoute {
 
   static Route<dynamic> getAppPage(RouteSettings routeSettings) {
     switch (routeSettings.name) {
+      case register:
+        return MaterialPageRoute(
+          builder: (BuildContext context) => SignUpPage(),
+        );
       case splash:
         return MaterialPageRoute(
           builder: (BuildContext context) => const SplashPage(),
