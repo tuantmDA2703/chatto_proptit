@@ -5,3 +5,4 @@ class AppConstant {
   static const unchartedDouble = -1.0;
   static const unchartedBool = null;
 }
+enum LoginState {pending, loading, successful, failed, tokenFailed}
