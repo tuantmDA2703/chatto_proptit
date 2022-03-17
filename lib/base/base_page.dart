@@ -2,6 +2,8 @@ import 'package:chatto_app/base/bloc_base.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import 'localizaion.dart';
+
 ///   Created by Duong Le
 ///   Sat,Mar 13th,2022
 ///   PageBase which extended by all page in project.
@@ -24,7 +26,6 @@ import 'package:get_it/get_it.dart';
 /// 				user input, and running in the background.
 /// 	- [detached] : The application is still hosted on a flutter engine but is detached from
 /// 					any host views.
-
 
 abstract class BasePage<@required T extends BlocBase> extends StatefulWidget {
   final T _bloc = GetIt.I.get<T>();
@@ -57,6 +58,7 @@ abstract class BasePage<@required T extends BlocBase> extends StatefulWidget {
 }
 
 class _BasePageState extends State<BasePage> with WidgetsBindingObserver {
+
   @override
   void initState() {
     super.initState();
