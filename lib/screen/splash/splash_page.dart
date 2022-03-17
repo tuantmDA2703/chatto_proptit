@@ -5,6 +5,8 @@ import 'package:chatto_app/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+//import '../../services/scaffold_messenger_service.dart';
+
 class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);
 
