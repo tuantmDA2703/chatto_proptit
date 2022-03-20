@@ -21,14 +21,14 @@ class SignUpPage extends BasePage<SignUpBloc> {
           StreamBuilder(
               stream: bloc.signUpStatusStream,
               builder: (context, snapshot) {
-                
+                if (!snapshot.hasData) return Container();
                 return (snapshot.data as Status<String>).when(
                     onIdle: () => Container(),
                     onLoading: () {
                       return Container(
                         height: double.infinity,
                         width: double.infinity,
-                        color: Color.fromRGBO(80, 80, 80,0.8),
+                        color: Color.fromRGBO(80, 80, 80, 0.8),
                         child: Center(child: CircularProgressIndicator()),
                       );
                     },
