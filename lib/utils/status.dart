@@ -1,10 +1,10 @@
 class Status<T> {
-	 dynamic when(
-    {dynamic Function()? onIdle,
-    required dynamic Function() onLoading,
-    required dynamic Function(T data) onSuccess,
-    required dynamic Function(String message) onError,}
-  ) {
+	R? when<R>({
+    R Function()? onIdle,
+    required R Function() onLoading,
+    required R Function(T data) onSuccess,
+    required R Function(String error) onError,
+  }) {
     if (this is Loading) {
       return onLoading();
     } else if (this is Success) {
@@ -12,7 +12,7 @@ class Status<T> {
     } else if (this is Error) {
       return onError((this as Error).message);
     } else {
-      return onIdle == null ? null : onIdle();
+      return onIdle?.call();
     }
   }
 }

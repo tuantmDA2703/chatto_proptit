@@ -2,6 +2,8 @@ import 'package:chatto_app/base/bloc_base.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import 'localizaion.dart';
+
 ///   Created by Duong Le
 ///   Sat,Mar 13th,2022
 ///   PageBase which extended by all page in project.
@@ -56,6 +58,7 @@ abstract class BasePage<@required T extends BlocBase> extends StatefulWidget {
 }
 
 class _BasePageState extends State<BasePage> with WidgetsBindingObserver {
+
   @override
   void initState() {
     super.initState();
