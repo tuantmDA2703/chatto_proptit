@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 ///   Call delete function to delete field
 
 class AppSharedPreference {
+  // ignore: prefer_typing_uninitialized_variables
   late var pref;
   getAppSharedPreference() async {
     pref = await SharedPreferences.getInstance();
