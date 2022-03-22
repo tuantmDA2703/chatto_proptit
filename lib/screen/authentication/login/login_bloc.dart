@@ -17,8 +17,6 @@
 import 'package:chatto_app/base/bloc_base.dart';
 import 'package:chatto_app/config/app_constant.dart';
 import 'package:chatto_app/repository/firebase_repositoty_impl.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 
 class LoginBloc extends BlocBase {
@@ -54,10 +52,6 @@ class LoginBloc extends BlocBase {
     }
   }
 
-  void _userLogoutYet() async {
-    // This function for checking if user logout yet
-  }
-
   void login(String email, String password) async {
     //This function is for login process
     loginState.add(LoginState.loading);
@@ -66,6 +60,6 @@ class LoginBloc extends BlocBase {
 
   void _checkToken() async {
     // This function is for checking token is avaiable
-    loginState.add(LoginState.tokenFailed);
+    loginState.add(await _firebaseRepoImpl.checkToken());
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chatto_app/base/utility.dart';
 import 'package:chatto_app/config/app_route.dart';
+import 'package:chatto_app/services/app_shared_preference.dart';
 import 'package:chatto_app/services/navigator_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -14,8 +15,9 @@ class SplashPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Utility utility = Utility();
     Timer(const Duration(seconds: 2), () async {
-     utility.navigator.pushed(AppRoute.login);
+      utility.navigator.pushed(AppRoute.login);
     });
+    GetIt.I<AppSharedPreference>().getAppSharedPreference();
     return Scaffold(
       body: Center(
         child: Text('Splash'),
