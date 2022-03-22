@@ -20,9 +20,10 @@ class AppSnackbar {
       GlobalKey<ScaffoldMessengerState>();
      // :))
      // push len choc nua anh xem cho vaang aj em cam own anh nhes 
-  showSnackBar(){
+  showSnackBar(text){
     snackBarKey.currentState?.showSnackBar(
-      SnackBar(content: Text('Contect')),
+      SnackBar(content: Text(text)),
     );
-  }  }
+  }  
+}
 
