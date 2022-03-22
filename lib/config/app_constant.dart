@@ -8,3 +8,4 @@ class AppConstant {
 }
 
 enum LoginState { pending, loading, successful, failed, tokenFailed }
+enum AppState { pending, loading, successful, failed, tokenFailed }
