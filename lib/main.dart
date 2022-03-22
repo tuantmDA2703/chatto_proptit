@@ -1,8 +1,12 @@
 import 'package:chatto_app/base/set_up_service_locator.dart';
+import 'package:chatto_app/services/app_shared_preference.dart';
 import 'package:chatto_app/services/navigator_service.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'base/localizaion.dart';
+import 'components/app_snackbar.dart';
 import 'config/app_route.dart';
 import 'screen/splash/splash_page.dart';
 
