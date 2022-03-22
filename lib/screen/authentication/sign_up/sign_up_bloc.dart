@@ -8,27 +8,59 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../../utils/status.dart';
 
+/*Created by Sudo248
+
+  This is SignUpBloc which manager all state and data of SignUpPage
+
+  
+ */
+
 class SignUpBloc extends BlocBase {
   final FirebaseRepository firebaseRepository;
 
   SignUpBloc({required this.firebaseRepository});
 
+  /// [signUpStatus] hold on status of SignUpPage:
+  ///  -> [Idle] : do nothing
+  ///  -> [Loading] : request to sign up new user in firebase auth
+  ///  -> [Success] : sign up success
+  ///  -> [Error] : error when loading.
+
   BehaviorSubject<Status<String>> signUpStatus = BehaviorSubject.seeded(Idle());
   Stream<Status<String>> get signUpStatusStream => signUpStatus.stream;
   Sink<Status<String>> get signUpStatusSink => signUpStatus.sink;
+
+  /// [email] hold on status of email field
+  ///  -> [Idle] : show a email TextField
+  ///  -> [Loading] : show a CircularProgressIndicator while [checkEmailValid]
+  ///  -> [Success] : show a tick icon if email is vaild
+  ///  -> [Error] : show a x icon if [isEmail] fasle
 
   BehaviorSubject<Status> email = BehaviorSubject.seeded(Idle());
   Stream<Status> get emailStream => email.stream;
   Sink<Status> get emailSink => email.sink;
 
+  /// [password] hold on status of password field
+  ///  -> [Idle] : show a password TextField
+  ///  -> [Success] : show a tick icon if [isPassWord] true
+  ///  -> [Error] : show a x icon if [isPassWord] false
+
   BehaviorSubject<Status> password = BehaviorSubject.seeded(Idle());
   Stream<Status> get passwordStream => password.stream;
   Sink<Status> get passwordSink => password.sink;
+
+  /// [confirmPassword] hold on status of confirm password field
+  ///  -> [Idle] : show a confirm password TextField
+  ///  -> [Success] : show a tick icon if confirmPassword == [passwordValue]
+  ///  -> [Error] : show a x icon if if confirmPassword != [passwordValue]
 
   BehaviorSubject<Status> confirmPassword = BehaviorSubject.seeded(Idle());
   Stream<Status> get confirmPasswordStream => confirmPassword.stream;
   Sink<Status> get confirmPasswordSink => confirmPassword.sink;
 
+  /// [signUpValid] hold on status of sign up button
+  /// sign up button availble if true else null
+  ///
   Stream<bool> get signUpValid =>
       Rx.combineLatest3<Status, Status, Status, bool>(
           emailStream, passwordStream, confirmPasswordStream, (e, p, c) {
@@ -39,6 +71,8 @@ class SignUpBloc extends BlocBase {
   String passwordValue = "";
   String confirmPasswordValue = "";
 
+  /// schedule time 500 ms for each check email
+  ///
   Timer? timer;
 
   @override
@@ -55,7 +89,6 @@ class SignUpBloc extends BlocBase {
       signUpStatusSink.add(Success(data: "Success"));
 
       navigator.pushed(AppRoute.login);
-	  
     } on FirebaseAuthException catch (e) {
       signUpStatusSink.add(Error(message: e.toString()));
     }

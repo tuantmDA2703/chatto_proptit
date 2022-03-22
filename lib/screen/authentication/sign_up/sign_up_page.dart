@@ -4,12 +4,19 @@ import 'package:flutter/material.dart';
 
 import '../../../utils/status.dart';
 
+/*Created by Sudo248
+
+  This is SignUpPage which user type your email and 
+  password to create a new account
+
+  
+ */
+
 class SignUpPage extends BasePage<SignUpBloc> {
   late Size size;
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    BuildContext pageContext = context;
     return Scaffold(
       body: Stack(
         children: [
