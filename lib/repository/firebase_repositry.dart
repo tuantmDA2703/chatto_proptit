@@ -1,5 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-abstract class FirebaseRepository{
+import '../config/app_constant.dart';
+
+abstract class FirebaseRepository {
   Future<User?> getCurrentUser();
+  Future<LoginState> checkToken();
+  Future<LoginState> authLogin(String email, String password);
 }

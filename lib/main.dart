@@ -1,8 +1,5 @@
-import 'package:chatto_app/base/localizaion.dart';
 import 'package:chatto_app/base/set_up_service_locator.dart';
-import 'package:chatto_app/services/app_shared_preference.dart';
 import 'package:chatto_app/services/navigator_service.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -29,9 +26,13 @@ class ChattoApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       navigatorKey: GetIt.I<NavigatorService>().navigatorKey,
+      scaffoldMessengerKey: GetIt.I<AppSnackbar>().snackBarKey,
       onGenerateRoute: (RouteSettings routeSettings) =>
           AppRoute.getAppPage(routeSettings),
       home: const SplashPage(),
     );
   }
 }
+
+
+
