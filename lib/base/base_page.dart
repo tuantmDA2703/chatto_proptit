@@ -28,8 +28,8 @@ import 'localizaion.dart';
 /// 					any host views.
 
 abstract class BasePage<@required T extends BlocBase> extends StatefulWidget {
-  final T _bloc = GetIt.I.get<T>();
-  T get bloc => _bloc;
+//   final T _bloc = GetIt.I.get<T>();
+//   T get bloc => _bloc;
 
   BasePage({Key? key}) : super(key: key);
 
@@ -37,12 +37,12 @@ abstract class BasePage<@required T extends BlocBase> extends StatefulWidget {
 
   @mustCallSuper
   void onInit() {
-    bloc.init();
+    // bloc.init();
   }
 
   @mustCallSuper
   void onDispose() {
-    bloc.dispose();
+    // bloc.dispose();
   }
 
   void onInactive() {}
