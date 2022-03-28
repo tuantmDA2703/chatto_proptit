@@ -2,20 +2,18 @@ import 'package:chatto_app/base/base_page.dart';
 import 'package:chatto_app/components/primary_button.dart';
 import 'package:chatto_app/screen/authentication/sign_up/sign_up_bloc.dart';
 import 'package:flutter/material.dart';
-
 import '../../../utils/status.dart';
 
 class SignUpPage extends BasePage<SignUpBloc> {
-  late Size size;
+  SignUpPage({Key? key}) : super(key: key);
   final bloc = SignUpBloc();
   @override
   Widget build(BuildContext context) {
-    size = MediaQuery.of(context).size;
-    BuildContext pageContext = context;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
         children: [
-          _content(),
+          _content(size),
           StreamBuilder<Status<String>>(
             stream: bloc.signUpStatusStream,
             builder: (context, snapshot) {
@@ -26,8 +24,8 @@ class SignUpPage extends BasePage<SignUpBloc> {
                   return Container(
                     height: double.infinity,
                     width: double.infinity,
-                    color: Color.fromRGBO(80, 80, 80, 0.8),
-                    child: Center(child: CircularProgressIndicator()),
+                    color: const Color.fromRGBO(80, 80, 80, 0.8),
+                    child: const Center(child: CircularProgressIndicator()),
                   );
                 },
                 onSuccess: (data) {
@@ -48,7 +46,7 @@ class SignUpPage extends BasePage<SignUpBloc> {
     );
   }
 
-  Widget _content() {
+  Widget _content(Size size) {
     double space = size.height / 20;
     return Padding(
       padding: const EdgeInsets.symmetric(

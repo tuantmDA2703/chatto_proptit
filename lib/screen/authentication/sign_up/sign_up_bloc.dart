@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:chatto_app/base/bloc_base.dart';
+import 'package:chatto_app/config/app_config.dart';
+import 'package:chatto_app/config/app_constant.dart';
 import 'package:chatto_app/config/app_route.dart';
 import 'package:chatto_app/repository/firebase_repositoty_impl.dart';
 import 'package:chatto_app/repository/firebase_repositry.dart';
@@ -11,23 +13,32 @@ import 'package:rxdart/rxdart.dart';
 import '../../../utils/status.dart';
 
 class SignUpBloc extends BlocBase {
-	/// setter injection
-  final FirebaseRepository firebaseRepository = GetIt.I.get<FirebaseRepositoryImpl>();
+  /// setter injection
+  final FirebaseRepository firebaseRepository =
+      GetIt.I.get<FirebaseRepositoryImpl>();
 
   BehaviorSubject<Status<String>> signUpStatus = BehaviorSubject.seeded(Idle());
+
   Stream<Status<String>> get signUpStatusStream => signUpStatus.stream;
+
   Sink<Status<String>> get signUpStatusSink => signUpStatus.sink;
 
   BehaviorSubject<Status> email = BehaviorSubject.seeded(Idle());
+
   Stream<Status> get emailStream => email.stream;
+
   Sink<Status> get emailSink => email.sink;
 
   BehaviorSubject<Status> password = BehaviorSubject.seeded(Idle());
+
   Stream<Status> get passwordStream => password.stream;
+
   Sink<Status> get passwordSink => password.sink;
 
   BehaviorSubject<Status> confirmPassword = BehaviorSubject.seeded(Idle());
+
   Stream<Status> get confirmPasswordStream => confirmPassword.stream;
+
   Sink<Status> get confirmPasswordSink => confirmPassword.sink;
 
   Stream<bool> get signUpValid =>
@@ -50,13 +61,25 @@ class SignUpBloc extends BlocBase {
   void onSignUpClick() async {
     try {
       signUpStatusSink.add(Loading());
-
-      await firebaseRepository.signUp(emailValue, passwordValue);
-
+      String response =
+          await firebaseRepository.signUp(emailValue, passwordValue);
       signUpStatusSink.add(Success(data: "Success"));
-
-      navigator.pushed(AppRoute.login);
-	  
+      if (response == AppConstant.fail) {
+        //handle error from authentication board error
+      } else {
+        //sign up successfully then insert user into cloud fire store
+        var data = {
+          'aboutMe': "",
+          'avatarUrl': AppConstant.defaultAvatarUrl,
+          'fullName': ""
+        };
+        firebaseRepository.insertDataWithCustomDocPath(
+          AppConfig.users,
+          response,
+          data: data,
+        );
+        navigator.pushed(AppRoute.login);
+      }
     } on FirebaseAuthException catch (e) {
       signUpStatusSink.add(Error(message: e.toString()));
     }

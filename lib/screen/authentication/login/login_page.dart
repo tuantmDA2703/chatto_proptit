@@ -13,6 +13,7 @@
 
 import 'package:chatto_app/components/app_snackbar.dart';
 import 'package:chatto_app/config/app_constant.dart';
+import 'package:chatto_app/config/app_route.dart';
 import 'package:chatto_app/screen/authentication/login/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -66,7 +67,9 @@ class LoginPage extends StatelessWidget {
                       child: const Text("Forgot Password"),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        bloc.navigator.pushed(AppRoute.signUp);
+                      },
                       child: const Text("Haven't had account yet?"),
                     ),
                   ],

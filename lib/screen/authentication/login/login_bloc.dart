@@ -44,7 +44,7 @@ class LoginBloc extends BlocBase {
 
   void checkField(String username, String password) {
     // This function for checking if 2 email and password field are filled
-    print(username + ' ' + password);
+    logData('Login',username + ' ' + password);
     if (username.isNotEmpty && password.isNotEmpty) {
       loginEnable.add(true);
     } else {
@@ -59,7 +59,7 @@ class LoginBloc extends BlocBase {
   }
 
   void _checkToken() async {
-    // This function is for checking token is avaiable
+    // This function is for checking token is available
     loginState.add(await _firebaseRepoImpl.checkToken());
   }
 }

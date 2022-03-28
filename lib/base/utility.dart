@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:chatto_app/services/navigator_service.dart';
 import 'package:get_it/get_it.dart';
 
@@ -12,4 +14,7 @@ class Utility{
     DateTime now = DateTime.now();
     return now;
   }
+
+  var isIos = Platform.isIOS;
+  var isAndroid = Platform.isAndroid;
 }

@@ -3,6 +3,7 @@ import 'package:chatto_app/config/app_constant.dart';
 import 'package:chatto_app/repository/firebase_repositry.dart';
 import 'package:chatto_app/services/app_shared_preference.dart';
 import 'package:chatto_app/services/firebase_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
@@ -11,8 +12,14 @@ class FirebaseRepositoryImpl extends FirebaseRepository {
   var sharedPref = GetIt.I<AppSharedPreference>();
 
   late FirebaseAuth auth;
+  late FirebaseFirestore fireStore;
+
+  static const String authKey = 'Firebase Authentication';
+  static const String storageKey = 'Firebase Cloud Storage';
+
   init() {
     auth = firebaseService.firebaseAuth;
+    fireStore = firebaseService.firebaseFireStore;
   }
 
   @override
@@ -51,16 +58,16 @@ class FirebaseRepositoryImpl extends FirebaseRepository {
   }
 
   @override
-  Future<bool> signUp(String email, String password) async {
+  Future<String> signUp(String email, String password) async {
     try {
-      // create new user with email and password
-      UserCredential newUser = await auth.createUserWithEmailAndPassword(
+      //create new user in authentication board
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
           email: email, password: password);
-
-      return Future.value(true);
+      return userCredential.user!.uid;
     } on FirebaseAuthException {
+      return AppConstant.fail;
       // error when create user.
-      rethrow;
+      // rethrow;
     }
   }
 
@@ -89,5 +96,32 @@ class FirebaseRepositoryImpl extends FirebaseRepository {
   @override
   Future<bool> verifyEmail(String email) async {
     return Future.value(true);
+  }
+
+  @override
+  Future<void> queryData(String collectionId, String docPath) {
+    // TODO: implement queryData
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> insertDataWithCustomDocPath(String collectionId, String docPath,
+      {dynamic data}) async {
+    await fireStore
+        .collection(collectionId)
+        .doc(docPath)
+        .set(data)
+        .then((value) {
+      //handle successful
+      logData(storageKey, 'already added');
+    }).catchError((error) {
+      //handle error here
+      logData(storageKey, 'already added');
+    });
+  }
+
+  void logData(String key, String message) {
+    // ignore: avoid_print
+    print('==>$key:$message');
   }
 }

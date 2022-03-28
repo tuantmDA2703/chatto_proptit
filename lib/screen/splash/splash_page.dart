@@ -1,7 +1,5 @@
-import 'dart:async';
-import 'package:chatto_app/base/utility.dart';
-import 'package:chatto_app/config/app_route.dart';
 import 'package:chatto_app/config/app_string.dart';
+import 'package:chatto_app/screen/splash/splash_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,11 +14,8 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
-    Utility utility = Utility();
-    Timer(
-      const Duration(seconds: 2),
-      () => utility.navigator.popAndPush(AppRoute.login),
-    );
+    SplashBloc bloc = SplashBloc();
+    bloc.init();
     return Scaffold(
       body: Center(
         child: Column(

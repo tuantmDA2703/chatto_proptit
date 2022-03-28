@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 class AppRoute {
   static const String splash = 'splash';
   static const String login = 'login';
-  static const String register = 'register';
+  static const String signUp = 'signUp';
 
   static Route<dynamic> getAppPage(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-      case register:
+      case signUp:
         return MaterialPageRoute(
           builder: (BuildContext context) => SignUpPage(),
         );
