@@ -9,7 +9,7 @@ abstract class FirebaseRepository {
 
   /// check email exits
   Future<bool> checkEmailValid(String email);
-  /// authen for email
+  /// authentication for email
   Future<bool> verifyEmail(String email);
   /// sign up account
   Future<bool> signUp(String email, String password);
