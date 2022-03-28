@@ -10,6 +10,8 @@ import 'package:easy_localization/src/public_ext.dart';
     *always add .tr();
 */
 
-class AppString{
+class AppString {
   String get str => 'str'.tr();
+  static const welcomeTitle =
+      "Chatto";
 }
