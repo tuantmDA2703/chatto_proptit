@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chatto_app/base/bloc_base.dart';
+import 'package:chatto_app/config/app_constant.dart';
 import 'package:chatto_app/config/app_route.dart';
 import 'package:chatto_app/repository/firebase_repositoty_impl.dart';
 import 'package:chatto_app/repository/firebase_repositry.dart';
@@ -18,18 +19,20 @@ import '../../../utils/status.dart';
  */
 
 class SignUpBloc extends BlocBase {
-	/// setter injection
-  final FirebaseRepository firebaseRepository = GetIt.I.get<FirebaseRepositoryImpl>();
+  /// setter injection
+  final FirebaseRepository firebaseRepository =
+      GetIt.I.get<FirebaseRepositoryImpl>();
 
   /// [signUpStatus] hold on status of SignUpPage:
-  ///  -> [Idle] : do nothing
-  ///  -> [Loading] : request to sign up new user in firebase auth
-  ///  -> [Success] : sign up success
-  ///  -> [Error] : error when loading.
+  ///  -> [pending] : do nothing
+  ///  -> [loading] : request to sign up new user in firebase auth
+  ///  -> [success] : sign up success
+  ///  -> [error] : error when loading.
 
-  BehaviorSubject<Status<String>> signUpStatus = BehaviorSubject.seeded(Idle());
-  Stream<Status<String>> get signUpStatusStream => signUpStatus.stream;
-  Sink<Status<String>> get signUpStatusSink => signUpStatus.sink;
+  BehaviorSubject<AppState> signUpStatus =
+      BehaviorSubject.seeded(AppState.pending);
+  Stream<AppState> get signUpStatusStream => signUpStatus.stream;
+  Sink<AppState> get signUpStatusSink => signUpStatus.sink;
 
   /// [email] hold on status of email field
   ///  -> [Idle] : show a email TextField
@@ -37,40 +40,48 @@ class SignUpBloc extends BlocBase {
   ///  -> [Success] : show a tick icon if email is vaild
   ///  -> [Error] : show a x icon if [isEmail] fasle
 
-  BehaviorSubject<Status> email = BehaviorSubject.seeded(Idle());
-  Stream<Status> get emailStream => email.stream;
-  Sink<Status> get emailSink => email.sink;
+  BehaviorSubject<AppState> email = BehaviorSubject.seeded(AppState.pending);
+  Stream<AppState> get emailStream => email.stream;
+  Sink<AppState> get emailSink => email.sink;
 
   /// [password] hold on status of password field
   ///  -> [Idle] : show a password TextField
   ///  -> [Success] : show a tick icon if [isPassWord] true
   ///  -> [Error] : show a x icon if [isPassWord] false
 
-  BehaviorSubject<Status> password = BehaviorSubject.seeded(Idle());
-  Stream<Status> get passwordStream => password.stream;
-  Sink<Status> get passwordSink => password.sink;
+  BehaviorSubject<AppState> password = BehaviorSubject.seeded(AppState.pending);
+  Stream<AppState> get passwordStream => password.stream;
+  Sink<AppState> get passwordSink => password.sink;
 
   /// [confirmPassword] hold on status of confirm password field
   ///  -> [Idle] : show a confirm password TextField
   ///  -> [Success] : show a tick icon if confirmPassword == [passwordValue]
   ///  -> [Error] : show a x icon if if confirmPassword != [passwordValue]
 
-  BehaviorSubject<Status> confirmPassword = BehaviorSubject.seeded(Idle());
-  Stream<Status> get confirmPasswordStream => confirmPassword.stream;
-  Sink<Status> get confirmPasswordSink => confirmPassword.sink;
+  BehaviorSubject<AppState> confirmPassword =
+      BehaviorSubject.seeded(AppState.pending);
+  Stream<AppState> get confirmPasswordStream => confirmPassword.stream;
+  Sink<AppState> get confirmPasswordSink => confirmPassword.sink;
 
   /// [signUpValid] hold on status of sign up button
   /// sign up button availble if true else null
   ///
   Stream<bool> get signUpValid =>
-      Rx.combineLatest3<Status, Status, Status, bool>(
+      Rx.combineLatest3<AppState, AppState, AppState, bool>(
           emailStream, passwordStream, confirmPasswordStream, (e, p, c) {
-        return (e is Success) && (p is Success) && (c is Success);
+        return (e == AppState.successful) &&
+            (p == AppState.successful) &&
+            (c == AppState.successful);
       });
 
   String emailValue = "";
   String passwordValue = "";
   String confirmPasswordValue = "";
+
+  String? errorSignUp;
+  String? errorEmail;
+  String? errorPassword;
+  String? errorConfirmPassword;
 
   /// schedule time 500 ms for each check email
   ///
@@ -83,15 +94,16 @@ class SignUpBloc extends BlocBase {
 
   void onSignUpClick() async {
     try {
-      signUpStatusSink.add(Loading());
+      signUpStatusSink.add(AppState.loading);
 
       await firebaseRepository.signUp(emailValue, passwordValue);
 
-      signUpStatusSink.add(Success(data: "Success"));
+      signUpStatusSink.add(AppState.successful);
 
       navigator.pushed(AppRoute.login);
     } on FirebaseAuthException catch (e) {
-      signUpStatusSink.add(Error(message: e.toString()));
+      errorSignUp = e.toString();
+      signUpStatusSink.add(AppState.failed);
     }
   }
 
@@ -104,33 +116,38 @@ class SignUpBloc extends BlocBase {
   void verifyEmail(String email) async {
     if (isEmail(email)) {
       emailValue = email;
-      emailSink.add(Loading());
+      emailSink.add(AppState.loading);
       if (!await firebaseRepository.checkEmailValid(email)) {
-        emailSink.add(Success(data: true));
+        emailSink.add(AppState.successful);
       } else {
-        emailSink.add(Error(message: "This email already sign up."));
+        errorEmail = "This email already sign up";
+        emailSink.add(AppState.failed);
       }
     } else {
-      emailSink.add(Error(message: "Invalid email"));
+      errorEmail = "Invalid email";
+      emailSink.add(AppState.failed);
     }
   }
 
   void verifyPassword(String password) async {
     if (isPassWord(password)) {
       passwordValue = password;
-      passwordSink.add(Success(data: true));
+      passwordSink.add(AppState.successful);
     } else {
-      passwordSink.add(Error(message: "Must more than 8 character"));
+      errorPassword = "Must more than 8 character";
+      passwordSink.add(AppState.failed);
     }
   }
 
   void verifyConfirmPassword(String confirmPassword) async {
     if (passwordValue.isEmpty) {
-      confirmPasswordSink.add(Error(message: "Must correct password"));
+      errorConfirmPassword = "Must correct password";
+      confirmPasswordSink.add(AppState.failed);
     } else if (confirmPassword == passwordValue) {
-      confirmPasswordSink.add(Success(data: true));
+      confirmPasswordSink.add(AppState.successful);
     } else {
-      confirmPasswordSink.add(Error(message: "Must like password"));
+		errorConfirmPassword = "Must like password";
+      confirmPasswordSink.add(AppState.failed);
     }
   }
 

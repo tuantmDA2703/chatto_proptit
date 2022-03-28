@@ -3,7 +3,6 @@ import 'package:chatto_app/base/utility.dart';
 import 'package:chatto_app/config/app_route.dart';
 import 'package:chatto_app/config/app_string.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
 
 class SplashPage extends StatefulWidget {
@@ -19,7 +18,7 @@ class _SplashPageState extends State<SplashPage> {
     Utility utility = Utility();
     Timer(
       const Duration(seconds: 2),
-      () => utility.navigator.popAndPush(AppRoute.login),
+      () => utility.navigator.popAndPush(AppRoute.register),
     );
     return Scaffold(
       body: Center(

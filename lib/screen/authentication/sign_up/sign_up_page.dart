@@ -1,5 +1,6 @@
 import 'package:chatto_app/base/base_page.dart';
 import 'package:chatto_app/components/primary_button.dart';
+import 'package:chatto_app/config/app_constant.dart';
 import 'package:chatto_app/screen/authentication/sign_up/sign_up_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -23,31 +24,25 @@ class SignUpPage extends BasePage<SignUpBloc> {
       body: Stack(
         children: [
           _content(),
-          StreamBuilder<Status<String>>(
+          StreamBuilder<AppState>(
             stream: bloc.signUpStatusStream,
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const SizedBox.shrink();
-              return snapshot.data!.when<Widget>(
-                onIdle: () => const SizedBox.shrink(),
-                onLoading: () {
-                  return Container(
-                    height: double.infinity,
-                    width: double.infinity,
-                    color: Color.fromRGBO(80, 80, 80, 0.8),
-                    child: Center(child: CircularProgressIndicator()),
-                  );
-                },
-                onSuccess: (data) {
-                  return const SizedBox.shrink();
-                },
-                onError: (message) {
-                  WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(SnackBar(content: Text(message)));
+              return handleWidgetAppState(snapshot.data,
+                  onLoading: () => Container(
+                        height: double.infinity,
+                        width: double.infinity,
+                        color: Color.fromRGBO(80, 80, 80, 0.8),
+                        child: Center(child: CircularProgressIndicator()),
+                      ),
+                  onSuccessful: () => const SizedBox.shrink(),
+                  onFailed: () {
+                    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(bloc.errorSignUp ?? "")));
+                    });
+                    return const SizedBox.shrink();
                   });
-                  return Container();
-                },
-              )!;
             },
           ),
         ],
@@ -71,7 +66,7 @@ class SignUpPage extends BasePage<SignUpBloc> {
           SizedBox(
             height: space,
           ),
-          StreamBuilder<Status>(
+          StreamBuilder<AppState>(
               stream: bloc.emailStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -83,25 +78,24 @@ class SignUpPage extends BasePage<SignUpBloc> {
                     border: const OutlineInputBorder(),
                     suffixIcon: Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: snapshot.data!.when<Widget>(
-                        onLoading: () => const UnconstrainedBox(
-                          child: SizedBox.square(
-                            dimension: 16,
-                            child: CircularProgressIndicator(),
-                          ),
-                        ),
-                        onSuccess: (data) => const Icon(
-                          Icons.check_circle_outline_outlined,
-                          color: Colors.green,
-                        ),
-                        onError: (message) => const Icon(
-                          Icons.cancel_outlined,
-                          color: Colors.red,
-                        ),
-                      ),
+                      child: handleWidgetAppState(snapshot.data,
+                          onLoading: () => const UnconstrainedBox(
+                                child: SizedBox.square(
+                                  dimension: 16,
+                                  child: CircularProgressIndicator(),
+                                ),
+                              ),
+                          onSuccessful: () => const Icon(
+                                Icons.check_circle_outline_outlined,
+                                color: Colors.green,
+                              ),
+                          onFailed: () => const Icon(
+                                Icons.cancel_outlined,
+                                color: Colors.red,
+                              )),
                     ),
-                    errorText: (snapshot.data is Error)
-                        ? (snapshot.data as Error).message
+                    errorText: (snapshot.data == AppState.failed)
+                        ? bloc.errorEmail
                         : null,
                   ),
                   onChanged: (email) => bloc.deboundTimeVerifyEmail(email),
@@ -110,7 +104,7 @@ class SignUpPage extends BasePage<SignUpBloc> {
           SizedBox(
             height: space,
           ),
-          StreamBuilder<Status>(
+          StreamBuilder<AppState>(
               stream: bloc.passwordStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
@@ -122,20 +116,21 @@ class SignUpPage extends BasePage<SignUpBloc> {
                     border: const OutlineInputBorder(),
                     suffixIcon: Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: snapshot.data!.when<Widget>(
+                      child: handleWidgetAppState(
+                        snapshot.data,
                         onLoading: () => const CircularProgressIndicator(),
-                        onSuccess: (data) => const Icon(
+                        onSuccessful: () => const Icon(
                           Icons.check_circle_outline_outlined,
                           color: Colors.green,
                         ),
-                        onError: (message) => const Icon(
+                        onFailed: () => const Icon(
                           Icons.cancel_outlined,
                           color: Colors.red,
                         ),
                       ),
                     ),
-                    errorText: (snapshot.data is Error)
-                        ? (snapshot.data as Error).message
+                    errorText: (snapshot.data == AppState.failed)
+                        ? bloc.errorPassword
                         : null,
                   ),
                   obscureText: true,
@@ -145,7 +140,7 @@ class SignUpPage extends BasePage<SignUpBloc> {
           SizedBox(
             height: space,
           ),
-          StreamBuilder<Status>(
+          StreamBuilder<AppState>(
               stream: bloc.confirmPasswordStream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return const SizedBox.shrink();
@@ -155,20 +150,21 @@ class SignUpPage extends BasePage<SignUpBloc> {
                     border: const OutlineInputBorder(),
                     suffixIcon: Padding(
                       padding: const EdgeInsets.only(right: 8.0),
-                      child: snapshot.data!.when<Widget>(
+                      child: handleWidgetAppState(
+                        snapshot.data,
                         onLoading: () => const CircularProgressIndicator(),
-                        onSuccess: (data) => const Icon(
+                        onSuccessful: () => const Icon(
                           Icons.check_circle_outline_outlined,
                           color: Colors.green,
                         ),
-                        onError: (message) => const Icon(
+                        onFailed: () => const Icon(
                           Icons.cancel_outlined,
                           color: Colors.red,
                         ),
                       ),
                     ),
-                    errorText: (snapshot.data is Error)
-                        ? (snapshot.data as Error).message
+                    errorText: (snapshot.data == AppState.failed)
+                        ? bloc.errorConfirmPassword
                         : null,
                   ),
                   obscureText: true,
