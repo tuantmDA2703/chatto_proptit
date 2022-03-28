@@ -4,4 +4,8 @@ class AppConstant {
   static const unchartedListString = <String>[];
   static const unchartedDouble = -1.0;
   static const unchartedBool = null;
+  static const keyPrefToken = 'persional-token';
 }
+
+enum LoginState { pending, loading, successful, failed, tokenFailed }
+enum AppState { pending, loading, successful, failed, tokenFailed }

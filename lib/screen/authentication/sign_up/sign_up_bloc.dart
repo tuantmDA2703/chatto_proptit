@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:chatto_app/base/bloc_base.dart';
 import 'package:chatto_app/config/app_route.dart';
+import 'package:chatto_app/repository/firebase_repositoty_impl.dart';
 import 'package:chatto_app/repository/firebase_repositry.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_it/get_it.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../utils/status.dart';
@@ -16,9 +18,8 @@ import '../../../utils/status.dart';
  */
 
 class SignUpBloc extends BlocBase {
-  final FirebaseRepository firebaseRepository;
-
-  SignUpBloc({required this.firebaseRepository});
+	/// setter injection
+  final FirebaseRepository firebaseRepository = GetIt.I.get<FirebaseRepositoryImpl>();
 
   /// [signUpStatus] hold on status of SignUpPage:
   ///  -> [Idle] : do nothing

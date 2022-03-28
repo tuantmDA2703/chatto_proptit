@@ -1,4 +1,5 @@
 import 'package:chatto_app/base/base_page.dart';
+import 'package:chatto_app/components/primary_button.dart';
 import 'package:chatto_app/screen/authentication/sign_up/sign_up_bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +15,7 @@ import '../../../utils/status.dart';
 
 class SignUpPage extends BasePage<SignUpBloc> {
   late Size size;
+  final bloc = SignUpBloc();
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
@@ -136,7 +138,7 @@ class SignUpPage extends BasePage<SignUpBloc> {
                         ? (snapshot.data as Error).message
                         : null,
                   ),
-				  obscureText: true,
+                  obscureText: true,
                   onChanged: (password) => bloc.verifyPassword(password),
                 );
               }),
@@ -169,7 +171,7 @@ class SignUpPage extends BasePage<SignUpBloc> {
                         ? (snapshot.data as Error).message
                         : null,
                   ),
-				  obscureText: true,
+                  obscureText: true,
                   onChanged: (confirmPassword) =>
                       bloc.verifyConfirmPassword(confirmPassword),
                 );
@@ -183,7 +185,7 @@ class SignUpPage extends BasePage<SignUpBloc> {
               if (!snapshot.hasData) {
                 return const SizedBox.shrink();
               }
-              return ElevatedButton(
+              return PrimaryButton(
                 onPressed: snapshot.data! ? bloc.onSignUpClick : null,
                 child: const Text("Sign up"),
               );
